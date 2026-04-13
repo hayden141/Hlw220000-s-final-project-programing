@@ -2,7 +2,7 @@
 a knights duty
 
 ## Repository
-<Link https://github.com/hayden141/Hlw220000-s-final-project-programing.git>
+https://github.com/hayden141/Hlw220000-s-final-project-programing.git
 
 ## Description
 this is a side scroller game with a 3 weapon inventory some tools will be used for combat others to open things. it has a medevil theme because tbh its a fun theme to work on and had lots of insiring art and technolgy for its time.
