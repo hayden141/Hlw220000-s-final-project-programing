@@ -1,26 +1,19 @@
 import pygame
 import sys
 import random
-
 pygame.init()
-
 WIDTH, HEIGHT = 800, 600
-
 screen = pygame.display.set_mode(
     (WIDTH, HEIGHT),
     pygame.RESIZABLE
 )
-
 pygame.display.set_caption(
     "Knight's Quest - milestone 2"
 )
-
 game_surface = pygame.Surface(
     (WIDTH, HEIGHT)
 )
-
 clock = pygame.time.Clock()
-
 BLACK = (152, 188, 200)
 WHITE = (240, 240, 240)
 GREEN = (50, 200, 50)
@@ -29,50 +22,40 @@ DARK_GREEN = (20, 100, 20)
 YELLOW = (10, 10, 10)
 BROWN = (120, 70, 20)
 LIGHTBROWN = (140, 100, 60)
-
 ground_y = HEIGHT - 100
 gravity = 0.5
-
 player = pygame.Rect(
     200,
     ground_y - 140,
     40,
     70
 )
-
 vel_y = 0
 speed = 5
 jump_power = -12
 on_ground = False
 facing = 1
 hp = 100
-
 player_attack_timer = 0
 player_attack_cooldown = 20
-
 swinging = False
 swing_timer = 0
 has_hit = False
-
 camera_x = 0
 target_camera_x = 0
-
 goal = pygame.Rect(
     1700,
     ground_y - 120,
     100,
     120
 )
-
 platforms = [
     pygame.Rect(400, 450, 150, 400),
     pygame.Rect(700, 380, 150, 400),
     pygame.Rect(1100, 420, 150, 400),
     pygame.Rect(1400, 400, 150, 400),
 ]
-
 goblins = []
-
 for i in range(10):
     x = random.randint(900, 1500)
 
@@ -93,8 +76,6 @@ for i in range(10):
         "attack_cooldown": 0,
         "jump_cooldown": 0
     })
-
-
 def draw_knight(surface, x, y, facing):
 
     pygame.draw.rect(
@@ -102,17 +83,13 @@ def draw_knight(surface, x, y, facing):
         (170, 170, 190),
         (x + 9, y + 20, 22, 45)
     )
-
     head_x = x + 20
-
     pygame.draw.circle(
         surface,
         (211, 211, 211),
         (head_x, y + 10),
         11
     )
-
-
 def draw_goblin(
     surface,
     x,
@@ -120,44 +97,36 @@ def draw_goblin(
     facing,
     hurt
 ):
-
     color = (
         (255, 80, 80)
         if hurt > 0
         else (0, 180, 0)
     )
-
     pygame.draw.circle(
         surface,
         color,
         (x + 20, y + 40),
         18
     )
-
     pygame.draw.circle(
         surface,
         (0, 140, 0),
         (x + 20, y + 20),
         14
     )
-
     head_offset = (
         6 if facing == 1 else -6
     )
-
     head_x = (
         x + 20 + head_offset
     )
-
     pygame.draw.circle(
         surface,
         (0, 0, 0),
         (head_x, y + 18),
         3
     )
-
     if facing == 1:
-
         pygame.draw.polygon(
             surface,
             (180, 180, 180),
@@ -167,9 +136,7 @@ def draw_goblin(
                 (x + 35, y + 45)
             ]
         )
-
     else:
-
         pygame.draw.polygon(
             surface,
             (180, 180, 180),
@@ -179,8 +146,6 @@ def draw_goblin(
                 (x + 5, y + 45)
             ]
         )
-
-
 def draw_spear(
     surface,
     x,
@@ -188,13 +153,10 @@ def draw_spear(
     facing,
     swing_progress
 ):
-
     offset = (
         swing_progress * 10
     )
-
     if facing == 1:
-
         pygame.draw.rect(
             surface,
             (200, 200, 200),
@@ -205,7 +167,6 @@ def draw_spear(
                 5
             )
         )
-
         pygame.draw.polygon(
             surface,
             (220, 220, 220),
@@ -224,9 +185,7 @@ def draw_spear(
                 )
             ]
         )
-
     else:
-
         pygame.draw.rect(
             surface,
             (200, 200, 200),
@@ -237,7 +196,6 @@ def draw_spear(
                 5
             )
         )
-
         pygame.draw.polygon(
             surface,
             (220, 220, 220),
@@ -256,26 +214,21 @@ def draw_spear(
                 )
             ]
         )
-
-
 def draw_health(
     x,
     y,
     hp,
     max_hp
 ):
-
     ratio = (
         max(0, hp)
         / max_hp
     )
-
     pygame.draw.rect(
         game_surface,
         RED,
         (x, y, 100, 10)
     )
-
     pygame.draw.rect(
         game_surface,
         GREEN,
@@ -286,25 +239,19 @@ def draw_health(
             10
         )
     )
-
 while True:
     clock.tick(60)
-
     for event in pygame.event.get():
 
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
     keys = pygame.key.get_pressed()
-
     if player_attack_timer > 0:
         player_attack_timer -= 1
-
     if keys[pygame.K_SPACE] and on_ground:
         vel_y = jump_power
         on_ground = False
-
     if keys[pygame.K_k] and player_attack_timer == 0:
         swinging = True
         swing_timer = 10
@@ -312,37 +259,28 @@ while True:
         player_attack_timer = (
             player_attack_cooldown
         )
-
     player_vel_x = 0
-
     if keys[pygame.K_a]:
         player_vel_x = -speed
         facing = -1
-
     if keys[pygame.K_d]:
         player_vel_x = speed
         facing = 1
-
     player.x += player_vel_x
-
     target_camera_x = (
         player.x - 200
     )
-
     camera_x += (
         target_camera_x
         - camera_x
     ) * 0.1
-
     vel_y += gravity
     player.y += vel_y
     on_ground = False
-
     if player.bottom >= ground_y:
         player.bottom = ground_y
         vel_y = 0
         on_ground = True
-
     for p in platforms:
 
         if (
@@ -352,27 +290,19 @@ while True:
             player.bottom = p.top
             vel_y = 0
             on_ground = True
-
     for g in goblins:
-
         if not g["alive"]:
             continue
-
         rect = g["rect"]
-
         if g["hurt_timer"] > 0:
             g["hurt_timer"] -= 1
-
         if g["attack_cooldown"] > 0:
             g["attack_cooldown"] -= 1
-
         if g["jump_cooldown"] > 0:
             g["jump_cooldown"] -= 1
-
         dist = abs(
             rect.x - player.x
         )
-
         if (
             dist
             < g["detect_range"]
@@ -384,21 +314,17 @@ while True:
             else:
                 rect.x -= g["speed"]
                 g["facing"] = -1
-
         else:
             rect.x += (
                 random.choice([-1, 1])
                 * 0.5
             )
-
         vertical_diff = (
             player.y - rect.y
         )
-
         horizontal_dist = abs(
             player.x - rect.x
         )
-
         if (
             horizontal_dist < 180
             and vertical_diff < -40
@@ -409,14 +335,11 @@ while True:
 
             g["vel_y"] = jump_power
             g["jump_cooldown"] = 60
-
         g["vel_y"] += gravity
         rect.y += g["vel_y"]
-
         if rect.bottom >= ground_y:
             rect.bottom = ground_y
             g["vel_y"] = 0
-
         if (
             rect.colliderect(player)
             and g["attack_cooldown"]
@@ -425,36 +348,28 @@ while True:
 
             hp -= 20
             g["attack_cooldown"] = 40
-
     swing_progress = (
         max(0, swing_timer)
         / 10
     )
-
     if swinging:
 
         swing_timer -= 1
-
         if facing == 1:
-
             spear_rect = pygame.Rect(
                 player.x + 40,
                 player.y + 30,
                 60,
                 10
             )
-
         else:
-
             spear_rect = pygame.Rect(
                 player.x - 60,
                 player.y + 30,
                 60,
                 10
             )
-
         for g in goblins:
-
             if (
                 g["alive"]
                 and spear_rect.colliderect(
@@ -462,31 +377,23 @@ while True:
                 )
                 and not has_hit
             ):
-
                 g["hp"] -= 1
                 g["hurt_timer"] = 1
                 has_hit = True
-
                 if g["hp"] <= 0:
                     g["alive"] = False
-
         if swing_timer <= 0:
             swinging = False
-
     if player.colliderect(goal):
         print("YOU WIN")
         pygame.quit()
         sys.exit()
-
     if hp <= 0:
         print("Game Over")
         pygame.quit()
         sys.exit()
-
     game_surface.fill(BLACK)
-
     for p in platforms:
-
         pygame.draw.rect(
             game_surface,
             DARK_GREEN,
@@ -497,7 +404,6 @@ while True:
                 p.height
             )
         )
-
         pygame.draw.rect(
             game_surface,
             LIGHTBROWN,
@@ -508,7 +414,6 @@ while True:
                 p.height
             )
         )
-
     pygame.draw.rect(
         game_surface,
         DARK_GREEN,
@@ -519,7 +424,6 @@ while True:
             HEIGHT
         )
     )
-
     pygame.draw.rect(
         game_surface,
         BROWN,
@@ -530,7 +434,6 @@ while True:
             HEIGHT
         )
     )
-
     pygame.draw.rect(
         game_surface,
         WHITE,
@@ -541,7 +444,6 @@ while True:
             120
         )
     )
-
     pygame.draw.rect(
         game_surface,
         WHITE,
@@ -552,7 +454,6 @@ while True:
             120
         )
     )
-
     pygame.draw.rect(
         game_surface,
         WHITE,
@@ -564,7 +465,6 @@ while True:
             120
         )
     )
-
     pygame.draw.rect(
         game_surface,
         YELLOW,
@@ -576,14 +476,12 @@ while True:
             40
         )
     )
-
     draw_knight(
         game_surface,
         player.x - camera_x,
         player.y,
         facing
     )
-
     if swinging:
 
         draw_spear(
@@ -593,7 +491,6 @@ while True:
             facing,
             swing_progress
         )
-
     for g in goblins:
 
         if g["alive"]:
@@ -606,14 +503,12 @@ while True:
                 g["facing"],
                 g["hurt_timer"]
             )
-
     draw_health(
         20,
         20,
         hp,
         100
     )
-
     scaled_surface = (
         pygame.transform.smoothscale(
             game_surface,
@@ -623,10 +518,9 @@ while True:
             )
         )
     )
-
     screen.blit(
         scaled_surface,
         (0, 0)
     )
-
     pygame.display.flip()
+    
