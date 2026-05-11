@@ -15,7 +15,7 @@ WHITE = (240, 240, 240)
 GREEN = (50, 200, 50)
 RED = (200, 50, 50)
 DARK_GREEN = (20, 100, 20)
-YELLOW = (196, 164, 132)
+YELLOW = (10, 10, 10)
 
 ground_y = HEIGHT - 100
 gravity = 0.5
@@ -38,8 +38,11 @@ has_hit = False
 camera_x = 0
 target_camera_x = 0
 
-goal = pygame.Rect(1700, ground_y - 120, 100, 120)
-
+goal = [
+pygame.Rect(1700, ground_y - 120, 100, 120),
+pygame.Rect(1700, ground_y - 140, 20, 120),
+pygame.Rect(1700, ground_y - 140, 20, 120)
+]
 platforms = [
     pygame.Rect(400, 450, 150, 400),
     pygame.Rect(700, 380, 150, 400),
@@ -252,7 +255,6 @@ while True:
 
     pygame.draw.rect(screen, YELLOW,
         (goal.x - camera_x, goal.y, 100, 120))
-
     for p in platforms:
         pygame.draw.rect(screen, DARK_GREEN,
             (p.x - camera_x, p.y, p.width, p.height))
