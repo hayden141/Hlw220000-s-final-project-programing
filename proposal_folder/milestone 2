@@ -38,11 +38,8 @@ has_hit = False
 camera_x = 0
 target_camera_x = 0
 
-goal = [
-pygame.Rect(1700, ground_y - 120, 100, 120),
-pygame.Rect(1700, ground_y - 140, 20, 120),
-pygame.Rect(1700, ground_y - 140, 20, 120)
-]
+goal = pygame.Rect(1700, ground_y - 120, 100, 120)
+
 platforms = [
     pygame.Rect(400, 450, 150, 400),
     pygame.Rect(700, 380, 150, 400),
@@ -252,9 +249,14 @@ while True:
     screen.fill(BLACK)
 
     pygame.draw.rect(screen, DARK_GREEN, (0, ground_y, WIDTH, HEIGHT))
-
-    pygame.draw.rect(screen, YELLOW,
+    pygame.draw.rect(screen, WHITE,
         (goal.x - camera_x, goal.y, 100, 120))
+    pygame.draw.rect(screen, WHITE,
+        (goal.x - camera_x, goal.y-10, 20, 120))
+    pygame.draw.rect(screen, WHITE,
+        (goal.x+80 - camera_x, goal.y-10, 20, 120))
+    pygame.draw.rect(screen, YELLOW,
+        (goal.x+50 - camera_x, goal.y+80, 20, 40))
     for p in platforms:
         pygame.draw.rect(screen, DARK_GREEN,
             (p.x - camera_x, p.y, p.width, p.height))
