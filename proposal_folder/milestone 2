@@ -38,18 +38,18 @@ has_hit = False
 camera_x = 0
 target_camera_x = 0
 
-goal = pygame.Rect(1700, ground_y - 120, 10, 120)
+goal = pygame.Rect(1700, ground_y - 120, 100, 120)
 
 platforms = [
-    pygame.Rect(400, 450, 150, 20),
-    pygame.Rect(700, 380, 150, 20),
-    pygame.Rect(1100, 420, 150, 20),
-    pygame.Rect(1400, 400, 150, 20),
+    pygame.Rect(400, 450, 150, 400),
+    pygame.Rect(700, 380, 150, 400),
+    pygame.Rect(1100, 420, 150, 400),
+    pygame.Rect(1400, 400, 150, 400),
 ]
 
 goblins = []
 
-for i in range(5):
+for i in range(10):
     x = random.randint(900, 1500)
     goblins.append({
         "rect": pygame.Rect(x, ground_y - 60, 40, 60),
@@ -67,8 +67,8 @@ for i in range(5):
 def draw_knight(screen, x, y, facing):
     pygame.draw.rect(screen, (170, 170, 190), (x + 9, y + 20, 22, 45))
     head_x = x + 20
-    pygame.draw.circle(screen, (120, 120, 140), (head_x, y + 10), 11)
-    pygame.draw.circle(screen, (255, 220, 180), (head_x, y + 13), 9)
+    pygame.draw.circle(screen, (211, 211, 211), (head_x, y + 10), 11)
+    
 
 def draw_goblin(screen, x, y, facing, hurt):
     color = (255, 80, 80) if hurt > 0 else (0, 180, 0)
@@ -211,7 +211,7 @@ while True:
             g["vel_y"] = 0
 
         if rect.colliderect(player) and g["attack_cooldown"] == 0:
-            hp -= 5
+            hp -= 20
             g["attack_cooldown"] = 40
 
     swing_progress = max(0, swing_timer) / 10
@@ -227,7 +227,7 @@ while True:
         for g in goblins:
             if g["alive"] and spear_rect.colliderect(g["rect"]) and not has_hit:
                 g["hp"] -= 1
-                g["hurt_timer"] = 10
+                g["hurt_timer"] = 1
                 has_hit = True
 
                 if g["hp"] <= 0:
@@ -251,10 +251,10 @@ while True:
     pygame.draw.rect(screen, DARK_GREEN, (0, ground_y, WIDTH, HEIGHT))
 
     pygame.draw.rect(screen, YELLOW,
-        (goal.x - camera_x, goal.y, 10, 120))
+        (goal.x - camera_x, goal.y, 100, 120))
 
     for p in platforms:
-        pygame.draw.rect(screen, WHITE,
+        pygame.draw.rect(screen, DARK_GREEN,
             (p.x - camera_x, p.y, p.width, p.height))
 
     draw_knight(screen, player.x - camera_x, player.y, facing)
