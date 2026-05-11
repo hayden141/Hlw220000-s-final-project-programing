@@ -33,15 +33,14 @@ camera_x = 0
 target_camera_x = 0
 goal = pygame.Rect(1700,ground_y - 120,100,120)
 platforms = [
-    pygame.Rect(400, 450, 150, 400),
-    pygame.Rect(700, 380, 150, 400),
-    pygame.Rect(1100, 420, 150, 400),
-    pygame.Rect(1400, 400, 150, 400),
+    pygame.Rect(400, 450, 150, 400),#platform 1
+    pygame.Rect(700, 380, 150, 400),#platform 2
+    pygame.Rect(1100, 420, 150, 400),#platform 3
+    pygame.Rect(1400, 400, 150, 400),#platform 4
 ]
 goblins = []
 for i in range(10):
     x = random.randint(900, 1500)
-
     goblins.append({
         "rect": pygame.Rect(x,ground_y - 60,40,60),
         "vel_y": 0,
@@ -55,40 +54,30 @@ for i in range(10):
         "jump_cooldown": 0
     })
 def draw_knight(surface, x, y, facing):
-    pygame.draw.rect(surface,(170, 170, 190),(x + 9, y + 20, 22, 45))
+    pygame.draw.rect(surface,(170, 170, 190),(x + 9, y + 20, 22, 45))# knight body
     head_x = x + 20
-    pygame.draw.circle(surface,(211, 211, 211),(head_x, y + 10),11)
-def draw_goblin(surface,x,y,facing,hurt):
+    pygame.draw.circle(surface,(211, 211, 211),(head_x, y + 10),11)# knight head
+def draw_goblin(surface,x,y,facing,hurt): # goblin damge
     color = ((RED)if hurt > 0 else (GREEN))
-    pygame.draw.circle(
-    surface,color,(x + 20, y + 40),18)
-    pygame.draw.circle(surface,(0, 140, 0),(x + 20, y + 20),14)
+    pygame.draw.circle(surface,color,(x + 20, y + 40),18) #goblin body
+    pygame.draw.circle(surface,(0, 140, 0),(x + 20, y + 20),14)#goblin body
     head_offset = (6 if facing == 1 else -6)
     head_x = (x + 20 + head_offset)
-    pygame.draw.circle(surface,(0, 0, 0),(head_x, y + 18),3)
+    pygame.draw.circle(surface,(0, 0, 0),(head_x, y + 18),3) #goblin head
     if facing == 1:
-        pygame.draw.polygon(
-            surface,
-            (180, 180, 180),
-            [
-                (x + 35, y + 35),(x + 50, y + 40),(x + 35, y + 45)
-            ]
-        )
+        pygame.draw.polygon(surface,(180, 180, 180),[(x + 35, y + 35),(x + 50, y + 40),(x + 35, y + 45)])# face right
     else:
-        pygame.draw.polygon(
-            surface,
-            (180, 180, 180),
-            [(x + 5, y + 35),(x - 10, y + 40),(x + 5, y + 45)])
-def draw_spear(
-surface,x,y,facing,swing_progress):
+        pygame.draw.polygon(surface,(180, 180, 180),[(x + 5, y + 35),(x - 10, y + 40),(x + 5, y + 45)]) #face left
+def draw_spear( # weapon 
+    surface,x,y,facing,swing_progress):
     offset = (swing_progress * 10)
     if facing == 1:
-        pygame.draw.rect(surface,(200, 200, 200),(x + 40 + offset,y + 30,50,5))
-        pygame.draw.polygon(surface,(220, 220, 220),[(x + 90 + offset,y + 28),(x + 105 + offset,y + 32),(x + 90 + offset,y + 36)])
+        pygame.draw.rect(surface,(200, 200, 200),(x + 40 + offset,y + 30,50,5)) #HILT RIGHT
+        pygame.draw.polygon(surface,(220, 220, 220),[(x + 90 + offset,y + 28),(x + 105 + offset,y + 32),(x + 90 + offset,y + 36)]) #TIP RIGHT
     else:
-        pygame.draw.rect(surface,(200, 200, 200),(x - 50 - offset,y + 30,50,5))
-        pygame.draw.polygon(surface,(220, 220, 220),[(x - 50 - offset,y + 28),(x - 65 - offset,y + 32),(x - 50 - offset,y + 36)])
-def draw_health(x,y,hp,max_hp):
+        pygame.draw.rect(surface,(200, 200, 200),(x - 50 - offset,y + 30,50,5)) # HILT LEFT
+        pygame.draw.polygon(surface,(220, 220, 220),[(x - 50 - offset,y + 28),(x - 65 - offset,y + 32),(x - 50 - offset,y + 36)]) #TIP LEFT
+def draw_health(x,y,hp,max_hp): #HEALTH BAR
     ratio = (max(0, hp) / max_hp)
     pygame.draw.rect(game_surface,RED,(x, y, 100, 10))
     pygame.draw.rect(game_surface,GREEN,(x,y,100 * ratio,10))
@@ -101,29 +90,24 @@ while True:
     keys = pygame.key.get_pressed()
     if player_attack_timer > 0:
         player_attack_timer -= 1
-    if keys[pygame.K_SPACE] and on_ground:
+    if keys[pygame.K_SPACE] and on_ground: #JUMP BUTTON
         vel_y = jump_power
         on_ground = False
-    if keys[pygame.K_k] and player_attack_timer == 0:
+    if keys[pygame.K_k] and player_attack_timer == 0: # ATTCK BUTTON
         swinging = True
         swing_timer = 10
         has_hit = False
         player_attack_timer = (player_attack_cooldown)
     player_vel_x = 0
-    if keys[pygame.K_a]:
+    if keys[pygame.K_a]: # MOVE LEFT
         player_vel_x = -speed
         facing = -1
-    if keys[pygame.K_d]:
+    if keys[pygame.K_d]: #MOVE RIGHT
         player_vel_x = speed
         facing = 1
     player.x += player_vel_x
-    target_camera_x = (
-        player.x - 200
-    )
-    camera_x += (
-        target_camera_x
-        - camera_x
-    ) * 0.1
+    target_camera_x = (player.x - 200)
+    camera_x += (target_camera_x- camera_x) * 0.1
     vel_y += gravity
     player.y += vel_y
     on_ground = False
@@ -156,16 +140,9 @@ while True:
                 rect.x -= g["speed"]
                 g["facing"] = -1
         else:
-            rect.x += (
-                random.choice([-1, 1])
-                * 0.5
-            )
-        vertical_diff = (
-            player.y - rect.y
-        )
-        horizontal_dist = abs(
-            player.x - rect.x
-        )
+            rect.x += (random.choice([-1, 1])* 0.5)
+            vertical_diff = (player.y - rect.y)
+        horizontal_dist = abs(player.x - rect.x)
         if (horizontal_dist < 180 and vertical_diff < -40 and g["jump_cooldown"] == 0 and rect.bottom >= ground_y):
             g["vel_y"] = jump_power
             g["jump_cooldown"] = 60
@@ -174,41 +151,18 @@ while True:
         if rect.bottom >= ground_y:
             rect.bottom = ground_y
             g["vel_y"] = 0
-        if (
-            rect.colliderect(player)
-            and g["attack_cooldown"]
-            == 0
-        ):
+        if (rect.colliderect(player) and g["attack_cooldown"]== 0):
             hp -= 20
             g["attack_cooldown"] = 40
-    swing_progress = (
-        max(0, swing_timer)
-        / 10
-    )
-    if swinging:
-        swing_timer -= 1
+        swing_progress = (max(0, swing_timer)/ 10)
+        if swinging:
+            swing_timer -= 1
         if facing == 1:
-            spear_rect = pygame.Rect(
-                player.x + 40,
-                player.y + 30,
-                60,
-                10
-            )
+            spear_rect = pygame.Rect(player.x + 40,player.y + 30,60,10)
         else:
-            spear_rect = pygame.Rect(
-                player.x - 60,
-                player.y + 30,
-                60,
-                10
-            )
+            spear_rect = pygame.Rect(player.x - 60,player.y + 30,60,10)
         for g in goblins:
-            if (
-                g["alive"]
-                and spear_rect.colliderect(
-                    g["rect"]
-                )
-                and not has_hit
-            ):
+            if (g["alive"] and spear_rect.colliderect(g["rect"])and not has_hit):
                 g["hp"] -= 1
                 g["hurt_timer"] = 1
                 has_hit = True
@@ -231,13 +185,13 @@ while True:
             DARK_GREEN,
             (p.x - camera_x,p.y,p.width,p.height)
         )
-        pygame.draw.rect(game_surface,LIGHTBROWN,(p.x - camera_x,p.y + 30,p.width,p.height))
-    pygame.draw.rect(game_surface,DARK_GREEN,(0,ground_y,WIDTH,HEIGHT))
-    pygame.draw.rect(game_surface,BROWN,(0,ground_y + 30,WIDTH,HEIGHT))
-    pygame.draw.rect(game_surface,WHITE,(goal.x - camera_x,goal.y,100,120))
-    pygame.draw.rect(game_surface,WHITE,(goal.x - camera_x,goal.y - 10,20,120))
-    pygame.draw.rect(game_surface,WHITE,(goal.x + 80 - camera_x,goal.y - 10,20,120))
-    pygame.draw.rect(game_surface,BLACK,(goal.x + 50 - camera_x,goal.y + 80,20,40))
+    pygame.draw.rect(game_surface,LIGHTBROWN,(p.x - camera_x,p.y + 30,p.width,p.height)) # DIRT 
+    pygame.draw.rect(game_surface,DARK_GREEN,(0,ground_y,WIDTH,HEIGHT)) # GROUND
+    pygame.draw.rect(game_surface,BROWN,(0,ground_y + 30,WIDTH,HEIGHT)) # MORE DIRT
+    pygame.draw.rect(game_surface,WHITE,(goal.x - camera_x,goal.y,100,120)) #CASTLE WALL 1
+    pygame.draw.rect(game_surface,WHITE,(goal.x - camera_x,goal.y - 10,20,120))#CASTLE WALL 2
+    pygame.draw.rect(game_surface,WHITE,(goal.x + 80 - camera_x,goal.y - 10,20,120))#CASTLE WALL 3
+    pygame.draw.rect(game_surface,BLACK,(goal.x + 50 - camera_x,goal.y + 80,20,40))#CASTLE DOOR
     draw_knight(game_surface,player.x - camera_x,player.y,facing)
     if swinging:
         draw_spear(game_surface,player.x - camera_x,player.y,facing,swing_progress)
