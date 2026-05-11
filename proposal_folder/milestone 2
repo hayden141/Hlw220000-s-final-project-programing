@@ -10,12 +10,12 @@ pygame.display.set_caption("Knight's Quest - milestone 2")
 
 clock = pygame.time.Clock()
 
-BLACK = (10, 10, 20)
+BLACK = (152, 188, 200)
 WHITE = (240, 240, 240)
 GREEN = (50, 200, 50)
 RED = (200, 50, 50)
 DARK_GREEN = (20, 100, 20)
-YELLOW = (240, 220, 80)
+YELLOW = (196, 164, 132)
 
 ground_y = HEIGHT - 100
 gravity = 0.5
