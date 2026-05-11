@@ -17,7 +17,7 @@ RED = (200, 50, 50)
 DARK_GREEN = (20, 100, 20)
 YELLOW = (10, 10, 10)
 BROWN = (120, 70, 20)
-
+LIGHTBROWN = (140, 100, 60)
 ground_y = HEIGHT - 100
 gravity = 0.5
 
@@ -248,7 +248,11 @@ while True:
         sys.exit()
 
     screen.fill(BLACK)
-
+    for p in platforms:
+        pygame.draw.rect(screen, DARK_GREEN,
+            (p.x - camera_x, p.y, p.width, p.height))
+        pygame.draw.rect(screen, LIGHTBROWN,
+            (p.x - camera_x, p.y+30, p.width, p.height))
     pygame.draw.rect(screen, DARK_GREEN, (0, ground_y, WIDTH, HEIGHT))
     pygame.draw.rect(screen, BROWN, (0, ground_y+30, WIDTH, HEIGHT))
     pygame.draw.rect(screen, WHITE,
@@ -259,11 +263,7 @@ while True:
         (goal.x+80 - camera_x, goal.y-10, 20, 120))
     pygame.draw.rect(screen, YELLOW,
         (goal.x+50 - camera_x, goal.y+80, 20, 40))
-    for p in platforms:
-        pygame.draw.rect(screen, DARK_GREEN,
-            (p.x - camera_x, p.y, p.width, p.height))
-        pygame.draw.rect(screen, BROWN,
-            (p.x - camera_x, p.y+30, p.width, p.height))
+    
     draw_knight(screen, player.x - camera_x, player.y, facing)
 
     if swinging:

@@ -3,8 +3,6 @@ import sys
 import random
 pygame.init()
 
-
-
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("knights quest milestone 1")
@@ -67,13 +65,10 @@ while True:
     for star in stars:
         pygame.draw.circle(screen, STAR, star, 2)
 
-    # Moon
     pygame.draw.circle(screen, MOON, (700, 100), 40)
 
-    # Ground
     pygame.draw.rect(screen, DARK_GREEN, (0, ground_y, WIDTH, HEIGHT - ground_y))
 
-    # Player
     pygame.draw.rect(screen, GREY, (x, y, char_width, char_height))
 
     pygame.display.flip()
